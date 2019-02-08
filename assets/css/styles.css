@@ -620,3 +620,18 @@ th {
 .params,.operator{
     font-size:12px;
 }
+
+/*
+#filterAdd .filtering input, 
+#filterAdd .filtering select,
+*/
+
+#filterAdd .filtering .btn
+{
+    padding-top: 3px;
+    padding-bottom: 1px;
+    padding-left: 4px;
+    padding-right: 4px;
+    float: right;
+    box-shadow: none
+}

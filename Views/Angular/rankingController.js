@@ -233,41 +233,67 @@ function deleteParentElement(n, append) {
     } else {
         filterCnt = [];
         $("#reloadTable").hide();
+        loadTable();
     }
 }
 function loadTable() {
-    $("#topTable").html(' <table id="data-table" class="order-column table top-table table-bordered"></table>');
-    $("#bottomTable").html(' <table id="bottom-table" class="order-column table top-table table-bordered"></table>');
-    let v = parseInt($("#parameterList").val())
-    let columnID = v + 1 // the table starts with the NAME
-    let top = rankingParameters[v].top
-    let bottom = rankingParameters[v].bottom
-    $('#data-table').DataTable({
-        data: rankingElements,
-        columns: cols,
-        order: [[columnID, top]],
-        info: false,
-        retrieve: true,
-        searching: false,
-        paging: true,
-        columnDefs: [{
-      targets: "_all",
-      orderable: false
-   }]
-    });
-    $('#bottom-table').DataTable({
-        data: rankingElements,
-        columns: cols,
-        order: [[columnID, bottom]],
-        info: false,
-        retrieve: true,
-        searching: false,
-        paging: true,
-        columnDefs: [{
-      targets: "_all",
-      orderable: false
-   }]
-    });
+    var data = [];
+      if (filterCnt.length >= 1) {
+           for (var i = 0; i < filterCnt.length; i++) {
+                let index = parseInt($("#params" + filterCnt[i]).val());
+                let operator = $("#operator" + filterCnt[i]).val();
+                let val = $("#number" + filterCnt[i]).val();
+                let name = $("#params" + filterCnt[i] + " option:selected").attr("data-name");
+                if (isNaN(index) || index == '' || operator == null || isNaN(val) || val == '') {
+                    $("#filtering" + filterCnt[i]).css("border", "1px solid red");
+                } else {
+                    $("#filtering" + filterCnt[i]).css("border", "1px solid #dee2e6");
+                    data.push({
+                        "index": index,
+                        "operator": operator,
+                        "value": val,
+                        "key": name
+                    });
+                }
+            }
+      }
+      if (data.length > 0) {
+            reloadTable(data);
+      } 
+      else { 
+                $("#topTable").html(' <table id="data-table" class="order-column table top-table table-bordered"></table>');
+                $("#bottomTable").html(' <table id="bottom-table" class="order-column table top-table table-bordered"></table>');
+                let v = parseInt($("#parameterList").val())
+                let columnID = v + 1 // the table starts with the NAME
+                let top = rankingParameters[v].top
+                let bottom = rankingParameters[v].bottom
+                $('#data-table').DataTable({
+                    data: rankingElements,
+                    columns: cols,
+                    order: [[columnID, top]],
+                    info: false,
+                    retrieve: true,
+                    searching: false,
+                    paging: true,
+                    columnDefs: [{
+                  targets: "_all",
+                  orderable: false
+                 }]
+                });
+                $('#bottom-table').DataTable({
+                    data: rankingElements,
+                    columns: cols,
+                    order: [[columnID, bottom]],
+                    info: false,
+                    retrieve: true,
+                    searching: false,
+                    paging: true,
+                    columnDefs: [{
+                  targets: "_all",
+                  orderable: false
+                 }]
+                });
+      }
 }
 
 
