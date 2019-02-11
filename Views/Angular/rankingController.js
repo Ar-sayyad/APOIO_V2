@@ -66,13 +66,13 @@ app.controller('rankingController', function ($scope) {
                                     <option value="" selected="" disabled="">---Select Operator---</option>'
             + selectOperator +
             '</select>\n\
-                                <input type="text" autocomplete="off" style="width:15%;" class="floatLeft form-control number" id="number'+ append + '" placeholder="Number">\n\
+                                <input type="text" autocomplete="off" style="width:15%;" onkeydown="getReload(event);" class="floatLeft form-control number" id="number'+ append + '" placeholder="Number">\n\
                                 <button type="button" onclick="deleteParentElement(this,'+ append + ');"  class="floatLeft btn btn-default remove"><i class="ti-close"></i></button> \n\
                             </div>');
         append++;
         $("#reloadTable").show();
     });
-
+    
     $("#reloadTable").click(function () {
         var data = [];
         if (filterCnt.length >= 1) {
@@ -230,12 +230,20 @@ function deleteParentElement(n, append) {
         if (index > -1) {
             filterCnt.splice(index, 1);
         }
+        $('#reloadTable').trigger('click');
     } else {
         filterCnt = [];
         $("#reloadTable").hide();
         loadTable();
     }
 }
+
+function getReload (event){
+    if(event.keyCode==13){
+       $('#reloadTable').trigger('click');
+    }
+}
+        
 function loadTable() {
     var data = [];
       if (filterCnt.length >= 1) {
